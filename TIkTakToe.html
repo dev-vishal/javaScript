@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Tic Tac Toe Game</title>
+	<style>
+		td {
+			width: 100px;
+			height: 100px;
+			text-align: center;
+			font-size: 36px;
+			cursor: pointer;
+		}
+
+		#tic-tac-toe {
+			border-collapse: collapse;
+		}
+
+		td:hover {
+			background-color: #f2f2f2;
+		}
+	</style>
+</head>
+
+<body>
+	<table border="1" align="center" id="tic-tac-toe">
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+	<script>
+		const board = document.getElementById('tic-tac-toe');
+		const cells = board.getElementsByTagName('td');
+		let currentPlayer = 'X';
+
+		function handleCellClick(cell) {
+			if (!cell.textContent) {
+				cell.textContent = currentPlayer;
+				checkWinner();
+				currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+			}
+		}
+
+		function checkWinner() {
+			const winningCombinations = [
+				[0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+				[0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+				[0, 4, 8], [2, 4, 6]             // Diagonals
+			];
+
+			for (const combination of winningCombinations) {
+				const [a, b, c] = combination;
+				if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+					alert(`Player ${currentPlayer} wins!`);
+					resetBoard();
+					return;
+				}
+			}
+
+			if ([...cells].every(cell => cell.textContent)) {
+				alert("It's a tie!");
+				resetBoard();
+			}
+		}
+
+		function resetBoard() {
+			for (const cell of cells) {
+				cell.textContent = '';
+			}
+			currentPlayer = 'X';
+		}
+
+		for (const cell of cells) {
+			cell.addEventListener('click', () => handleCellClick(cell));
+		}
+
+	</script>
+</body>
+
+</html>
